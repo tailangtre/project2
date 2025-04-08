@@ -198,21 +198,26 @@ app.get('/resume', (req, res) => {
 });
 
 app.get('/logout', (req, res) => {
-  if (req.user) {
-      // If the user is logged in using Google OAuth
-      req.logout((err) => {
-          if (err) {
-              return res.send('Error logging out from Google');
-          }
-          res.redirect('/login');  // Redirect to login page after Google OAuth logout
-      });
+  // Destroy the session first
   req.session.destroy((err) => {
+    if (err) {
+      console.error('Session destruction error:', err);
+      return res.status(500).send('Error logging out');
+    }
+    
+    // Then logout Passport
+    req.logout((err) => {
       if (err) {
-        return res.send('Error logging out');
+        console.error('Passport logout error:', err);
+        return res.status(500).send('Error logging out');
       }
-      res.redirect('/login')});  // Redirect to login page after custom logout
-     
-}});
+      
+      // Clear the session cookie
+      res.clearCookie('connect.sid');
+      res.redirect('/login');
+    });
+  });
+});
 
 
 // Start the server
