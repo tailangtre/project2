@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Dashboard</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://unpkg.com/github-calendar@latest/dist/github-calendar.min.js"></script>
+  <link rel="stylesheet" href="https://unpkg.com/github-calendar@latest/dist/github-calendar-responsive.css" />
+  <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body class="bg-gray-100 text-gray-800 font-sans">
+    <header>
+        <h1 class="text-3xl font-bold">Hung Cuong Tran</h1>
+        <p>5430 Culloden St, Vancouver, BC</p>
+        <p>Email: <a href="mailto:htran106@my.bcit.ca">htran106@my.bcit.ca</a></p>
+        <p>Phone: <a href="tel:+17789172893">(778)-917-2893</a></p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/resume">Resume</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <li><a href="/dashboard">Dashboard</a></li>
+            <li><a href="/logout" class="text-red-500 hover:underline">Logout</a></li>
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </nav>
+  <nav class="bg-white shadow-md p-4 flex justify-between items-center">
+    <h1 class="text-xl font-bold">Welcome, <%= user %>!</h1>
+  </nav>
+
+  <main class="max-w-4xl mx-auto mt-10 p-6 bg-white shadow-md rounded-xl">
+    <h2 class="text-2xl font-semibold mb-4">GitHub Contributions</h2>
+    <p class="mb-4 text-gray-600">See your open source activity visualized below:</p>
+
+    <div class="calendar border rounded-lg p-4 bg-gray-50">Loading GitHub contributions...</div>
+
+    <script>
+      GitHubCalendar(".calendar", "tailangtre", { responsive: true });
+    </script>
+
+
+  </main>
+
+</body>
+</html>

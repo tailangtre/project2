@@ -1,0 +1,15 @@
+.form-container {
+    width: 100%;
+    max-width: 100%;
+    overflow: visible;  /* Make sure content can overflow if necessary */
+    padding: 20px;
+}
+
+textarea {
+    width: 100%;
+    min-height: 100px;
+    box-sizing: border-box;
+    padding: 10px;
+    resize: vertical; /* Allow vertical resizing if needed */
+    overflow: auto;  /* Allow scrollbars if content exceeds height */
+}

@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/edit.css">
+</head>
+<body>
+    <header>
+        <h1>Hung Cuong Tran</h1>
+        <p>5430 Culloden St, Vancouver, BC</p>
+        <p>Email: <a href="mailto:htran106@my.bcit.ca">htran106@my.bcit.ca</a></p>
+        <p>Phone: <a href="tel:+17789172893">(778)-917-2893</a></p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/resume">Resume</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <% if (!user) { %>
+                <li><a href="/login">Login</a></li>
+                <% } else { %>
+                        <li><a href="/dashboard">Dashboard</a></li>
+                        <li><a href="/logout" class="logout">Logout</a></li>
+            <% } %>
+        </ul>
+    </nav>
+
+
+<div class="form-container">
+<form action="/projects/edit/<%= index %>" method="POST">
+    <label for="name">Project Name:</label>
+    <input type="text" id="name" name="name" value="<%= project.name %>" required><br><br>
+
+    <label for="image">Image URL:</label>
+    <input type="text" id="image" name="image" value="<%= project.image %>" required><br><br>
+
+    <label for="overview">Overview:</label>
+    <textarea id="overview" name="overview" required><%= project.overview %></textarea><br><br>
+
+    <label for="features">Key Features (key: value, comma separated):</label>
+    <textarea id="features" name="features" required>
+    <%= Object.keys(project.features).map(feature => feature + ': ' + project.features[feature]).join('.,') %>
+    </textarea><br><br>
+
+    <label for="technologies">Technologies Used:</label>
+    <textarea id="technologies" name="technologies" required><%= project.technologies %></textarea><br><br>
+
+    <label for="link">Project Link:</label>
+    <input type="url" id="link" name="link" value="<%= project.link %>" required><br><br>
+
+    <button type="submit">Save Changes</button>
+</form>
+</div>
+
+<a href="/projects">Back to Projects</a>

@@ -1,0 +1,81 @@
+<%- include('../partials/header', { title: 'Projects' }) %>
+<main>
+    <!-- Trivia Game Section -->
+    <!-- <section id="trivia-game">
+        <h2>Neuro Nuggets – Trivia Game</h2>
+        <div class="project-description">
+            <div class="image-placeholder"> -->
+                <!-- Placeholder for Trivia Game Image -->
+                <!-- <img src="/images/neuronuggets.png" alt="Neuro Nuggets Trivia Game">
+            </div>
+            <div class="text-content">
+                <p><strong>Overview:</strong> Neuro Nuggets is an interactive trivia game designed to challenge users' knowledge across various topics, including science, history, and pop culture. The project showcases my skills in frontend development, responsive design, and seamless integration between frontend and backend technologies.</p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    <li><strong>Interactive Interface:</strong> Developed using HTML, CSS, and JavaScript, the game offers a user-friendly interface with intuitive navigation, ensuring an engaging experience for users of all ages.</li>
+                    <li><strong>Responsive Design:</strong> Ensures optimal gameplay experience across devices by utilizing media queries and flexible layouts, allowing users to enjoy the game on desktops, tablets, and smartphones.</li>
+                    <li><strong>Backend Integration:</strong> Employed Python Flask to connect the frontend with game logic, enabling dynamic question loading and real-time score tracking. This integration ensures a smooth and responsive gaming experience.</li>
+                    <li><strong>User Engagement:</strong> Incorporated visual feedback and interactive elements, such as animations and sound effects, to enhance user interaction and retention, making the game more immersive and enjoyable.</li>
+                </ul>
+                <p><strong>Technologies Used:</strong> Frontend: HTML, CSS, JavaScript; Backend: Python Flask; Version Control: Git, GitHub</p>
+                <p><a class="project-link" href="https://github.com/ShubeeOro/Neuro-Nuggets">View Project</a></p>
+            </div>
+        </div>
+    </section> -->
+
+    <!-- Budget App Section -->
+    <!-- <section id="budget-app">
+        <h2>PocketPal – Personal Finance App Prototype</h2>
+        <div class="project-description">
+            <div class="image-placeholder">
+                Placeholder for Budget App Image -->
+                <!-- <img src="/images/pocketpal.png" alt="PocketPal Personal Finance App">
+            </div>
+            <div class="text-content">
+                <p><strong>Overview:</strong> PocketPal is a personal finance application prototype aimed at simplifying expense and budget management. This project highlights my proficiency in UI/UX design, user research, and collaborative development processes.</p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    <li><strong>High-Fidelity Prototypes:</strong> Designed interactive prototypes using Figma, focusing on user-friendly navigation and intuitive interfaces. The prototypes include features such as budget tracking, expense categorization, and financial goal setting.</li>
+                    <li><strong>Consistent Visual Design:</strong> Established a cohesive visual language with consistent icons, color schemes, and typography to enhance user experience. The design emphasizes clarity and ease of use, ensuring users can navigate the app effortlessly.</li>
+                    <li><strong>User-Centric Design:</strong> Conducted user research to understand target audience needs, leading to design iterations that improved usability. Feedback from potential users was incorporated to refine features and enhance overall satisfaction.</li>
+                    <li><strong>Collaborative Development:</strong> Worked closely with developers to translate design specifications into functional features, including budgeting tools and transaction logs. This collaboration ensured that the final product met both design and technical requirements.</li>
+                </ul>
+                <p><strong>Technologies Used:</strong> Design Tools: Figma; Version Control: Git, GitHub</p>
+                <p><a class="project-link" href="https://www.figma.com/files/team/1462182982580367130/recents-and-sharing?fuid=1462182035383387331">View Project</a></p>
+            </div>
+        </div>
+    </section> -->
+    <% projects.forEach((project, index) => { %>
+        <h2><%= project.name %></h2>
+        <div class="project-description">
+            <div class="image-placeholder">
+                <img src="/images/<%= project.image %>" alt="<%= project.name %>">
+            </div>
+            <div class="text-content">
+                <p><strong>Overview:</strong> <%= project.overview %></p>
+                <p><strong>Key Features:</strong></p>
+                <ul>
+                    <% Object.entries(project.features).forEach(([key, value]) => { %>
+                        <li><strong><%= key %>:</strong> <%= value %></li>
+                    <% }) %>
+                </ul>
+                <p><strong>Technologies Used:</strong> <%= project.technologies %></p>
+                <p><a class="project-link" href="<%= project.link %>">View Project</a></p>
+                <% if (user) { %>
+                    <!-- Show Edit and Delete buttons only to authenticated users -->
+                    <form action="/projects/edit/<%= index %>" method="GET">
+                      <button type="submit">Edit</button>
+                    </form>
+                    <form action="/projects/delete/<%= index %>" method="POST">
+                      <button type="submit">Delete</button>
+                    </form>
+                  <% } %>
+                </div>
+              </div>
+            <% }) %>
+            
+            <a href="/projects/new">Add New Project</a>
+</main>
+
+
+<%- include('../partials/footer') %>

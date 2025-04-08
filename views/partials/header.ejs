@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio Website</title>
+    <link rel="stylesheet" href="/css/styles.css">
+
+</head>
+<body>
+    <header>
+        <h1>Hung Cuong Tran</h1>
+        <p>5430 Culloden St, Vancouver, BC</p>
+        <p>Email: <a href="mailto:htran106@my.bcit.ca">htran106@my.bcit.ca</a></p>
+        <p>Phone: <a href="tel:+17789172893">(778)-917-2893</a></p>
+    </header>
+    <nav>
+        <ul>
+            <li><a href="/resume">Resume</a></li>
+            <li><a href="/projects">Projects</a></li>
+            <% if (!user) { %>
+            <li><a href="/login">Login</a></li>
+            <% } else { %>
+                    <li><a href="/dashboard">Dashboard</a></li>
+                    <li><a href="/logout" class="logout">Logout</a></li>
+            <% } %>
+            <!-- Add more navigation links as needed -->
+        </ul>
+    </nav>

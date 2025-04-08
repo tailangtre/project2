@@ -1,0 +1,14 @@
+:80 {
+	reverse_proxy localhost:4000
+}
+
+# :80: This specifies that Caddy should listen on port 80, the default port for HTTP traffic. By using :80 without a domain name, Caddy will accept requests on port 80 for any domain or IP address.
+
+# { ... }: The curly braces define a site block, which contains directives that apply to the specified address—in this case, any HTTP request on port 80.
+
+# reverse_proxy localhost:4000: This directive tells Caddy to act as a reverse proxy, forwarding incoming requests to the backend server running on localhost at port 4000. #The reverse_proxy directive is powerful and supports various features like load balancing, health checks, and more. 
+
+# In this configuration, when Caddy receives an HTTP request on port 80, it forwards the request to the application server running locally on port 4000. Caddy handles the incoming client connection and proxies the request to the backend, effectively decoupling client requests from the application server.
+# This configuration does not include directives for serving static files directly from Caddy. If my portfolio consists of static files (e.g., HTML, CSS, JavaScript), and I wish for Caddy to serve them without relying on a backend service, I can use the file_server directive
+
+# For more advanced configurations, such as handling HTTPS (port 443), load balancing, or modifying headers, I can expand this basic setup by adding additional directives within the site block.
