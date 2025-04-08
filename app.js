@@ -20,11 +20,11 @@ app.use(session({
   secret: 'yourSecretKey',       // Replace with a secure, random secret key in production
   resave: false,                 // Avoid resaving session if unmodified
   saveUninitialized: false,      // Only save sessions when a user is authenticated
-  cookie: { secure: false }      // Set to true if using HTTPS
+  cookie: { secure: false, sameSite: 'lax' }      // Set to true if using HTTPS
 }));
 
-app.use(passport.session());  // Make sure it's included
 app.use(passport.initialize());
+app.use(passport.session());  // Make sure it's included
 
 app.use(express.static(path.join(__dirname, 'public')));
 
@@ -37,8 +37,14 @@ passport.use(new GoogleStrategy({
   return done(null, profile);
 }));
 
-passport.serializeUser((user, done) => done(null, user));
-passport.deserializeUser((obj, done) => done(null, obj));
+passport.serializeUser((user, done) => {
+  done(null, user);
+});
+
+passport.deserializeUser((user, done) => {
+  done(null, user);
+});
+
 
 app.get('/auth/google',
   passport.authenticate('google', { scope: ['profile', 'email'] }));
