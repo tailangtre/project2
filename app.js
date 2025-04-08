@@ -50,6 +50,7 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
+      console.log(req.user);
       req.session.user = req.user.displayName;  // Save user in session manually
       req.session.save((err) => {  // Explicitly save session
         if (err) console.error(err);
