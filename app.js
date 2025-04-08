@@ -61,16 +61,7 @@ app.get('/auth/google/callback',
   
 
 app.get('/login', (req, res) => {
-  res.send(`
-    <h2>Login</h2>
-    <form method="post" action="/login">
-      <input type="text" name="username" placeholder="Username" required/><br/>
-      <input type="password" name="password" placeholder="Password" required/><br/>
-      <button type="submit">Login</button>
-      <a href="/auth/google">Login with Google</a>
-      <a href="/resume">Continue as Guest</a>
-    </form>
-  `);
+  res.render('pages/login');
 });
 
 function isAuthenticated(req, res, next) {
