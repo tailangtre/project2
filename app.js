@@ -7,7 +7,6 @@ const passport = require('passport');
 const { link } = require('fs');
 const GoogleStrategy = require('passport-google-oauth20').Strategy;
 require('dotenv').config();
-const flash = require('connect-flash');
 const PORT = process.env.PORT || 4000;
 
 
@@ -37,7 +36,7 @@ function isAuthenticated(req, res, next) {
 passport.use(new GoogleStrategy({
   clientID: "624864617872-13un0uue38d4do7srnu7ccht0qv2jokk.apps.googleusercontent.com",
   clientSecret: "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",
-  callbackURL: "http://portfolio.alldreamscometrue.store:4000/auth/google/callback"
+  callbackURL: "http://portfolio.play.alldreamscometrue.store/auth/google/callback"
 }, (accessToken, refreshToken, profile, done) => {
   return done(null, profile);
 }));
@@ -51,8 +50,9 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-      user = req.user.displayName;  // Save user in session manually
-      res.redirect('/dashboard', { user });
+      console.log(req.user.displayName);
+      req.session.user = req.user.displayName;  // Save user in session manually
+      res.redirect('/dashboard');
     });
   
 
@@ -82,13 +82,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/dashboard', isAuthenticated, (req, res) => {
-  if (req.session.user) {
-    user = req.session.user;
-}
-if (req.user) {
-    user = req.user;
-}
-  res.render('pages/dashboard', { user });
+  res.render('pages/dashboard', { user: req.session.user });
 });
 
 
@@ -140,38 +134,21 @@ app.post('/projects/edit/:index', isAuthenticated, (req, res) => {
     link
   };
 
-  if (req.session.user) {
-    user = req.session.user;
-}
-if (req.user) {
-    user = req.user;
-}
 
-  res.redirect('/projects', { user }); // Redirect to the projects page after editing
+  res.redirect('/projects'); // Redirect to the projects page after editing
 });
 
 app.post('/projects/delete/:index', isAuthenticated, (req, res) => {
   const index = req.params.index;
-  if (req.session.user) {
-    user = req.session.user;
-}
-if (req.user) {
-    user = req.user;
-}
 
   // Remove the project from the array
   projects.splice(index, 1);
 
-  res.redirect('/projects', { user }); // Redirect to the projects page after deletion
+  res.redirect('/projects'); // Redirect to the projects page after deletion
 });
 
 app.post('/projects/new', isAuthenticated, (req, res) => {
-  if (req.session.user) {
-    user = req.session.user;
-}
-if (req.user) {
-    user = req.user;
-}
+
   const { name, overview, features, technologies, link } = req.body;
 
   // Parse features into an object
@@ -193,44 +170,23 @@ if (req.user) {
   };
 
   projects.push(newProject); // Add the new project to the projects array
-  res.redirect('/projects', { user }); // Redirect to the projects page after adding
+  res.redirect('/projects'); // Redirect to the projects page after adding
 });
 
 app.get('/projects/edit/:index', isAuthenticated, (req, res) => {
-  if (req.session.user) {
-    user = req.session.user;
-}
-if (req.user) {
-    user = req.user;
-}
   const index = req.params.index;
   const project = projects[index];
-  res.render('pages/edit', { project, index, user });
+  res.render('pages/edit', { project, index, user: req.session.user });
 });
 
 
 
 app.get('/resume', (req, res) => {
-  let user = null;
-  if (req.session.user) {
-    user = req.session.user;
-}
-if (req.user) {
-    user = req.user;
-}
-  res.render('pages/resume', { user });
+  res.render('pages/resume', { user: req.session.user });
 });
 
 app.get('/logout', (req, res) => {
-  if (req.session.user) {
-      // If the user is logged in using your custom method
-      req.session.destroy((err) => {
-          if (err) {
-              return res.send('Error logging out');
-          }
-          res.redirect('/login');  // Redirect to login page after custom logout
-      });
-  } else if (req.user) {
+  if (req.user) {
       // If the user is logged in using Google OAuth
       req.logout((err) => {
           if (err) {
@@ -238,11 +194,13 @@ app.get('/logout', (req, res) => {
           }
           res.redirect('/login');  // Redirect to login page after Google OAuth logout
       });
-  } else {
-      // If no user is logged in (shouldn't reach here if using the session properly)
-      res.redirect('/login');
-  }
-});
+  req.session.destroy((err) => {
+      if (err) {
+        return res.send('Error logging out');
+      }
+      res.redirect('/login')});  // Redirect to login page after custom logout
+     
+}});
 
 
 // Start the server
