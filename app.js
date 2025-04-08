@@ -26,6 +26,7 @@ app.use(session({
 app.use(express.static(path.join(__dirname, 'public')));
 
 function isAuthenticated(req, res, next) {
+  console.log(req.session.user);
   if (req.session.user) {
     return next();
   }
@@ -50,9 +51,7 @@ app.get('/auth/google',
 app.get('/auth/google/callback',
     passport.authenticate('google', { failureRedirect: '/' }),
     (req, res) => {
-      console.log(req.user);
       req.session.user = req.user.displayName;
-      console.log(req.session.user);
       req.session.save((err) => {  // Explicitly save session
         if (err) console.error(err);
         res.redirect('/dashboard');
@@ -86,6 +85,7 @@ app.post('/login', (req, res) => {
 });
 
 app.get('/dashboard', isAuthenticated, (req, res) => {
+  console.log(req.session.user);
   res.render('pages/dashboard', { user: req.session.user });
 });
 
