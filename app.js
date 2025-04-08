@@ -23,15 +23,10 @@ app.use(session({
   cookie: { secure: false }      // Set to true if using HTTPS
 }));
 
-app.use(express.static(path.join(__dirname, 'public')));
+app.use(passport.session());  // Make sure it's included
+app.use(passport.initialize());
 
-function isAuthenticated(req, res, next) {
-  console.log(req.session.user);
-  if (req.session.user) {
-    return next();
-  }
-  res.redirect('/login');
-}
+app.use(express.static(path.join(__dirname, 'public')));
 
 
 passport.use(new GoogleStrategy({
@@ -59,7 +54,6 @@ app.get('/auth/google/callback',
     });
   
 
-
 app.get('/login', (req, res) => {
   res.send(`
     <h2>Login</h2>
@@ -72,6 +66,14 @@ app.get('/login', (req, res) => {
     </form>
   `);
 });
+
+function isAuthenticated(req, res, next) {
+  console.log(req.session.user);
+  if (req.session.user) {
+    return next();
+  }
+  res.redirect('/login');
+}
 
 app.post('/login', (req, res) => {
   const { username, password } = req.body;
