@@ -197,22 +197,16 @@ app.get('/resume', (req, res) => {
   res.render('pages/resume', { user: req.session.user });
 });
 
-app.get('/logout', (req, res) => {
-  // Destroy the session first
-  req.session.destroy((err) => {
-    if (err) {
-      console.error('Session destruction error:', err);
-      return res.status(500).send('Error logging out');
-    }
+app.get('/logout', (req, res, next) => {
+  // First logout Passport while session still exists
+  req.logout(function(err) {
+    if (err) { return next(err); }
     
-    // Then logout Passport
-    req.logout((err) => {
-      if (err) {
-        console.error('Passport logout error:', err);
-        return res.status(500).send('Error logging out');
-      }
+    // Then destroy the session
+    req.session.destroy(function(err) {
+      if (err) { return next(err); }
       
-      // Clear the session cookie
+      // Finally clear the cookie
       res.clearCookie('connect.sid');
       res.redirect('/login');
     });
